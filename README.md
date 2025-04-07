@@ -4,7 +4,7 @@
 
 ### 1. 添加你自己的 CPU 代码
 
-在 `PDU_v3/vsrc/PDU/CPU` 目录下创建 `your_cpu` 目录，并将你的 CPU 代码放在该目录下，其实你可以把你的 CPU 代码放在任何地方，只要你之后将其导入 vivado 工程中即可
+在 `PDU_v3/vsrc/PDU/CPU` 目录下创建 `your_cpu` 目录，并将你的 CPU 代码放在该目录下，不过你可以把你的 CPU 代码放在任何地方，只要你之后将其导入 vivado 工程中即可
 
 ### 2. 修改 `PDU_v3/vsrc/PDU/include/mem_init.vh` 文件
 
@@ -16,7 +16,7 @@
 
 - `CPU_IMEM_FILE` 和 `CPU_DMEM_FILE`
 
-    在本框架中，可以在 `PDU_v3/vsrc/inits` 路径下找到 `cpu_inits` 文件夹，将 CPU 所用的初始化文件 `cpu_imem.ini` 和 `cpu_dmem.ini` 放入其中，让后将两个宏定义同样修改成两个文件的**绝对路径**即可，其实你可以把初始化文件放在任何地方，只要宏定义的绝对路径能正确找到 cpu 的两初始化文件即能正确实现
+    在本框架中，可以在 `PDU_v3/vsrc/inits` 路径下找到 `cpu_inits` 文件夹，将 CPU 所用的初始化文件 `instr.ini` 和 `data.ini` 放入其中，让后将两个宏定义同样修改成两个文件的**绝对路径**即可，其实你可以把初始化文件放在任何地方，只要宏定义的绝对路径能正确找到 cpu 的两初始化文件即能正确实现
 
 ### 3. 创建 vivado 工程
 
