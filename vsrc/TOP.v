@@ -1,3 +1,5 @@
+`include "global_config.vh"
+
 module TOP(
     input                   [ 0 : 0]            sys_clk,
     input                   [ 0 : 0]            sys_rst,
@@ -65,9 +67,18 @@ module TOP(
     wire [31 : 0] dmem_wdata;
     wire [ 0 : 0] dmem_we;
 
+    wire [ 0 : 0] sys_rst_in;
+
+    `ifdef PHYSICAL_BOARD
+        assign  sys_rst_in = ~sys_rst;
+    `endif
+    `ifndef PHYSICAL_BOARD
+        assign  sys_rst_in = sys_rst;
+    `endif
+
     PDU_kernel pdu_kernel(
         .sys_clk                        (sys_clk                    ),
-        .sys_rst                        (sys_rst                    ),
+        .sys_rst                        (sys_rst_in                 ),
 
         .imem_addr                      (pdu_iaddr                  ),
         .imem_rdata                     (pdu_idata                  ),
@@ -133,7 +144,7 @@ module TOP(
 
     PDU_UART pdu_uart(
         .sys_clk                        (sys_clk                    ),
-        .sys_rst                        (sys_rst                    ),
+        .sys_rst                        (sys_rst_in                 ),
 
         .interface_addr                 (uart_interface_addr        ),
         .interface_rdata                (uart_interface_rdata       ),
@@ -146,7 +157,7 @@ module TOP(
 
     CPU_ctrl cpu_ctrl(
         .sys_clk                        (sys_clk                    ),
-        .sys_rst                        (sys_rst                    ),
+        .sys_rst                        (sys_rst_in                 ),
 
         .interface_addr                 (cpu_ctrl_interface_addr    ),
         .interface_rdata                (cpu_ctrl_interface_rdata   ),
