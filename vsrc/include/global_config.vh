@@ -8,7 +8,6 @@
 // ====================================================================
 
 
-
 // ============================== Step 1 ==============================
 // COMMENT ONE of the two lines below.
 // 请根据自己使用的指令集注释下面两行中的一行。
@@ -37,8 +36,8 @@
 `endif
 `endif
 
-`define CPU_IMEM_FILE "<your_path_to_workspace>/vsrc/inits/cpu_inits/cpu_imem.ini"
-`define CPU_DMEM_FILE "<your_path_to_workspace>/vsrc/inits/cpu_inits/cpu_dmem.ini"
+`define CPU_IMEM_FILE "<your_path_to_workspace>/vsrc/inits/cpu_inits/instr.ini"
+`define CPU_DMEM_FILE "<your_path_to_workspace>/vsrc/inits/cpu_inits/data.ini"
 
 // ============================== Step 3 ==============================
 // If you choose to use FPGAOL, then COMMENT the line below.
@@ -47,12 +46,25 @@
 
 // `define PHYSICAL_BOARD
 
-
-
 // ============================== Step 4 ==============================
 // 依据自己的实际需要设定下面的参数
 // CSG324 板子的波特率为 115200，FGG484 板子的波特率为 9600
 // 时钟频率为 100MHz
 
 `define UART_CNT_FULL   867
-`define UART_CNT_HALF   433 
+`define UART_CNT_HALF   433  
+
+// =========================== unchangeable ===========================
+
+`ifdef INSTRUCTION_SET_RISCV
+`ifndef INSTRUCTION_SET_LOONGARCH
+    `define IMEM_START_ADDR 32'H00400000
+    `define DMEM_START_ADDR 32'H10010000
+`endif
+`endif
+`ifdef INSTRUCTION_SET_LOONGARCH
+`ifndef INSTRUCTION_SET_RISCV
+    `define IMEM_START_ADDR 32'H1C000000
+    `define DMEM_START_ADDR 32'H1C800000
+`endif
+`endif

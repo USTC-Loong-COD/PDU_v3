@@ -244,30 +244,33 @@ module TOP(
     localparam IMEM_DEPTH = 10;
     localparam DMEM_DEPTH = 10;
 
+    wire [31 : 0] imem_addr_offset = imem_addr - `IMEM_START_ADDR;
+    wire [31 : 0] dmem_addr_offset = dmem_addr - `DMEM_START_ADDR;
+
     IMEM #(
-        .DEPTH                          (IMEM_DEPTH                         )
+        .DEPTH                          (IMEM_DEPTH                             )
     )
     imem
     (
-        .clk                            (sys_clk                            ),
+        .clk                            (sys_clk                                ),
         
-        .addr                           (imem_addr[IMEM_DEPTH + 1 : 2]      ),
-        .rdata                          (imem_rdata                         ),
-        .wdata                          (imem_wdata                         ),
-        .we                             (imem_we                            )
+        .addr                           (imem_addr_offset[IMEM_DEPTH + 1 : 2]   ),
+        .rdata                          (imem_rdata                             ),
+        .wdata                          (imem_wdata                             ),
+        .we                             (imem_we                                )
     );
 
     DMEM #(
-        .DEPTH                          (DMEM_DEPTH                         )
+        .DEPTH                          (DMEM_DEPTH                             )
     )
     dmem
     (
-        .clk                            (sys_clk                            ),
+        .clk                            (sys_clk                                ),
         
-        .addr                           (dmem_addr[DMEM_DEPTH + 1 : 2]      ),
-        .rdata                          (dmem_rdata                         ),
-        .wdata                          (dmem_wdata                         ),
-        .we                             (dmem_we                            )
+        .addr                           (dmem_addr_offset[DMEM_DEPTH + 1 : 2]   ),
+        .rdata                          (dmem_rdata                             ),
+        .wdata                          (dmem_wdata                             ),
+        .we                             (dmem_we                                )
     );
 
 endmodule
