@@ -1,4 +1,6 @@
-// 115200 8N1 UART receiver
+// 8N1 UART receiver
+`include "global_config.vh"
+
 `define		DISABLED			3'h7
 `define		IDLE				3'h0
 `define		RECEIVING_START		3'h1
@@ -50,7 +52,7 @@ module UART_RX (
                     counter <= 0;
                 end
                 `RECEIVING_START : begin
-                    if(counter == 433) begin
+                    if(counter == `UART_CNT_HALF) begin
                         counter <= 0;
                         status_cur <= `RECEIVING_BITS;
                     end
@@ -61,7 +63,7 @@ module UART_RX (
                     bits_counter <= 0;
                 end
                 `RECEIVING_BITS : begin
-                    if(counter == 867) begin
+                    if(counter == `UART_CNT_FULL) begin
                         if(bits_counter == 7) begin
                             status_cur <= `RECEIVING_END;
                         end
@@ -74,7 +76,7 @@ module UART_RX (
                     end
                 end
                 `RECEIVING_END : begin
-                    if(counter == 867) begin
+                    if(counter == `UART_CNT_FULL) begin
                         status_cur <= `IDLE;
                         ready <= uart_rxd;
                     end

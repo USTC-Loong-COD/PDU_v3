@@ -1,4 +1,6 @@
-// 115200 8N1 UART transmitter
+//8N1 UART transmitter
+`include "global_config.vh"
+
 `define     DISABLED            3'h7
 `define     IDLE                3'h0
 `define     SENDING_START       3'h1
@@ -49,7 +51,7 @@ module UART_TX (
                     end
                 end
                 `SENDING_START : begin
-                    if (counter == 867) begin
+                    if (counter == `UART_CNT_FULL) begin
                         status_cur <= `SENDING_BITS;
                         counter <= 0;
                         bits_counter <= 0;
@@ -59,7 +61,7 @@ module UART_TX (
                     end
                 end
                 `SENDING_BITS : begin
-                    if (counter == 867) begin
+                    if (counter == `UART_CNT_FULL) begin
                         if (bits_counter == 7) begin
                             transmitted <= 1;
                             status_cur <= `SENDING_END;
@@ -72,7 +74,7 @@ module UART_TX (
                     end
                 end
                 `SENDING_END : begin
-                    if (counter == 867) begin
+                    if (counter == `UART_CNT_FULL) begin
                         status_cur <= `IDLE;
                         transmitted <= 0;
                         counter <= 0;
