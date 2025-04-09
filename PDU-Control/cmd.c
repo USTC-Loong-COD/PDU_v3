@@ -21,6 +21,7 @@ static bool get_token(char * _token, unsigned long _tokenSize, const char * _lin
         store_byte(_token + i++, c);
         (*_offset)++;
     }
+    store_byte(_token + i, '\0');
     return true;
 }
 
@@ -241,9 +242,10 @@ bool read_command(Command * _cmd) {
     }
     else if(strcmp(cmdName, "step") == 0) {
         unsigned int count;
-        if(!get_uint32(&count, cmdLine, 80, &offset)) {
-            _cmd->__cmdName = NONE;
-            return false;
+        if(!get_uint32_or_none(&count, cmdLine, 80, &offset)) {
+            _cmd->__cmdName = STEP;
+            _cmd->__args[0] = 1;
+            return true;
         }
         _cmd->__cmdName = STEP;
         _cmd->__args[0] = count;
@@ -515,6 +517,9 @@ static bool step1() {
 
 void step(unsigned int _count) {
     for(unsigned int i = 0; i < _count && step1(); i++);
+    uart_puts("Current PC: ");
+    uart_put_uint32_hex8(*CORE_CURRENT_PC);
+    uart_puts("\n\r");
 }
 
 void run() {

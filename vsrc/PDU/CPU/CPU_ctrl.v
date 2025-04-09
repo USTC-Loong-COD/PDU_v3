@@ -313,7 +313,7 @@ module CPU_ctrl (
 
     always @(*) begin
         new_breakpoint_id = 0;
-        for (i = 0; i < 8; i = i + 1) begin
+        for (i = 7; i >= 0; i = i - 1) begin
             if (!reg_breakpoint_valid[i]) begin
                 new_breakpoint_id = i[2 : 0];
             end
@@ -342,8 +342,8 @@ module CPU_ctrl (
                 else begin
                     core_breakpoint_is_set <= 1'B0;
                 end
-            end
-            if (core_command[4]) begin  // Delete breakpoints
+            end 
+            else if (core_command[4]) begin  // Delete breakpoints
                 if (reg_breakpoint_valid[core_delete_breakpoint_id]) begin
                     reg_breakpoint_valid[core_delete_breakpoint_id] <= 1'B0;
                     core_delete_breakpoint_addr <= reg_breakpoint_addr[core_delete_breakpoint_id];
@@ -383,7 +383,7 @@ module CPU_ctrl (
     always @(*) begin
         breakpoint_hit_id = 0;
         for (i = 0; i < 8; i = i + 1) begin
-            if (cpu_commit_pc == reg_breakpoint_addr[i]) begin
+            if (cpu_commit_pc == reg_breakpoint_addr[i] && reg_breakpoint_valid[i]) begin
                 breakpoint_hit_id = i[2 : 0];
             end
         end
