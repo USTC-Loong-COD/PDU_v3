@@ -25,12 +25,16 @@
 // [^^^^^ 仅供示例，请不要直接复制 ^^^^^]
 
 `ifdef INSTRUCTION_SET_RISCV
+`ifndef INSTRUCTION_SET_LOONGARCH
     `define PDU_IMEM_FILE "<your_path_to_workspace>/vsrc/inits/pdu_inits/riscv/pdu_imem.ini"
     `define PDU_DMEM_FILE "<your_path_to_workspace>/vsrc/inits/pdu_inits/riscv/pdu_dmem.ini"
 `endif
+`endif
 `ifdef INSTRUCTION_SET_LOONGARCH
+`ifndef INSTRUCTION_SET_RISCV
     `define PDU_IMEM_FILE "<your_path_to_workspace>/vsrc/inits/pdu_inits/loongarch/pdu_imem.ini"
     `define PDU_DMEM_FILE "<your_path_to_workspace>/vsrc/inits/pdu_inits/loongarch/pdu_dmem.ini"
+`endif
 `endif
 
 `define CPU_IMEM_FILE "<your_path_to_workspace>/vsrc/inits/cpu_inits/cpu_imem.ini"
