@@ -43,8 +43,9 @@
 // ============================== Step 3 ==============================
 // If you choose to use FPGAOL, then COMMENT the line below.
 // 如果你在 FPGAOL 上使用 PDU v3，请将下面这行代码**注释**
+// 如果你在物理开发板上使用 PDU v3，请将下面这行代码**取消注释**
 
-`define PHYSICAL_BOARD
+// `define PHYSICAL_BOARD
 
 
 
