@@ -1,4 +1,4 @@
-`include "mem_init.vh"
+`include "global_config.vh"
 
 module IMEM#(
     parameter DEPTH = 10

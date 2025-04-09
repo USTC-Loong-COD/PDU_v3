@@ -4,11 +4,34 @@
 
 ### 1. 添加你自己的 CPU 代码
 
-在 `PDU_v3/vsrc/PDU/CPU` 目录下创建 `your_cpu` 目录，并将你的 CPU 代码放在该目录下，不过你可以把你的 CPU 代码放在任何地方，只要你之后将其导入 vivado 工程中即可
+在 `PDU_v3/vsrc/PDU/CPU` 目录下创建 `your_cpu` 目录，并将你的 CPU 代码放在该目录下。不过你可以把你的 CPU 代码放在任何地方，只要你之后将其导入 Vivado 工程中即可。
 
-### 2. 修改 `PDU_v3/vsrc/PDU/include/mem_init.vh` 文件
+假定你选择使用我们的框架，那么项目目录应当如下所示：
 
-打开 `PDU_v3/vsrc/PDU/include/mem_init.vh` 文件，修改 `PDU_IMEM_FILE` 、 `PDU_DMEM_FILE` 、 `CPU_IMEM_FILE` 和 `CPU_DMEM_FILE`
+```
+PDU_v3/
+├── assets          // 一些非功能性附件
+├── image           // PDU v3 的数据通路
+├── impl            // .xdc 约束文件，包含 FPGAOL 与物理开发板
+├── PDU-Control     // 用于生成 PDU 控制指令流的程序（也就是 pdu_inits 中的文件），无需处理
+└── vsrc 
+    ├── include     // Verilog 头文件，包括全局设置文件
+    ├── inits       // CPU、PDU 的初始化 .ini 文件 
+    ├── PDU
+    │   ├── BUS     // PDU 总线实现
+    │   ├── CPU     // CPU 设计实现
+    │   │   ├── memory      // CPU 内存实现，上板可基于对应 .ini 文件初始化
+    │   │   ├── your_cpu    // 自己的 CPU 相关文件。此文件夹需要自行创建，包含 CPU 及其内部模块
+    │   │   └── CPU_ctrl.v  // CPU 与 PDU 的通信接口
+    │   ├── Kernel  // PDU 核心实现
+    │   ├── MEM     // PDU 内存实现
+    │   └── UART    // PDU 串口实现
+    └── TOP.v       // 项目的 TOP 文件，包含外设接口
+```
+
+### 2. 修改 `PDU_v3/vsrc/include/global_config.vh` 文件
+
+打开 `PDU_v3/vsrc/include/global_config.vh` 文件，依照指引修改 `PDU_IMEM_FILE` 、 `PDU_DMEM_FILE` 、 `CPU_IMEM_FILE` 和 `CPU_DMEM_FILE` 四个路径宏定义
 
 - `PDU_IMEM_FILE` 和 `PDU_DMEM_FILE`
 
@@ -18,13 +41,13 @@
 
     在本框架中，可以在 `PDU_v3/vsrc/inits` 路径下找到 `cpu_inits` 文件夹，将 CPU 所用的初始化文件 `instr.ini` 和 `data.ini` 放入其中，然后将两个宏定义同样修改成两个文件的**绝对路径**即可，其实你可以把初始化文件放在任何地方，只要宏定义的绝对路径能正确找到 cpu 的两初始化文件即能正确实现
 
-### 3. 创建 vivado 工程
+### 3. 创建 Vivado 工程
 
-打开 vivado 并且创建工程，在 **Add source** 界面下选择 **Add Directories** ，选择 `PDU_v3/vsrc` 目录添加，如果你的 CPU 代码不在 `PDU_v3/vsrc` 及其子目录下，你需要额外导入你的 CPU 代码文件
+打开 Vivado 并且创建工程，在 **Add source** 界面下选择 **Add Directories** ，选择 `PDU_v3/vsrc` 目录添加，如果你的 CPU 代码不在 `PDU_v3/vsrc` 及其子目录下，你需要额外导入你的 CPU 代码文件
 
 ![image](./assets/add_source.png)
 
-在 **Add Constraints** 界面下选择添加 `PDU_v3/impl/XC7A100t-CSG324-1.xdc` 约束文件，自然，你需要选择 **xc7a100t-csg324-1** 型开发板
+如果你在 FPGAOL 上部署，请在 **Add Constraints** 界面下选择添加 `PDU_v3/impl/XC7A100t-CSG324-1_FPGAOL.xdc` 约束文件；如果你在物理开发板上部署，请选择添加 `PDU_v3/impl/XC7A100t-CSG324-1_BOARD.xdc` 约束文件。自然，你需要选择 **xc7a100t-csg324-1** 型开发板。
 
 ![image](./assets/add_constraints.png)
 
@@ -54,7 +77,7 @@
 - `wd <addr.> [<count> = 1]`: 写入数据
 - `rr`: 读取寄存器
 - `bs <addr.>`: 设置断点
-- `bc <id>`: 清除断点
+- `bd <id>`: 清除断点
 - `bl`: 查看断点
 - `step`: 单步执行
 - `run`: 运行

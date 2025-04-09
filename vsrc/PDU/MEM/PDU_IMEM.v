@@ -1,4 +1,4 @@
-`include "mem_init.vh"
+`include "global_config.vh"
 
 module PDU_IMEM#(
     parameter               DEPTH               = 12
