@@ -71,17 +71,17 @@ PDU_v3/
 
 **以下命令的 addr 支持十进制数和 "0x" 开头的十六进制数**
 
-- `ri <addr.> [<count> = 1]`: 读取指令
-- `wi <addr.> [<count> = 1]`: 写入指令
-- `rd <addr.> [<count> = 1]`: 读取数据
-- `wd <addr.> [<count> = 1]`: 写入数据
-- `rr`: 读取寄存器
-- `bs <addr.>`: 设置断点
-- `bd <id>`: 清除断点
-- `bl`: 查看断点
-- `step`: 单步执行
-- `run`: 运行
-- `reset`: 重置
+- `ri <addr.> [<count> = 1]`: 从 <addr.> 开始读取 `count` 条指令
+- `wi <addr.> [<count> = 1]`: 从 <addr.> 开始写入 `count` 条指令
+- `rd <addr.> [<count> = 1]`: 从 <addr.> 开始读取 `count` 条数据
+- `wd <addr.> [<count> = 1]`: 从 <addr.> 开始写入 `count` 条数据
+- `rr`: 读取所有寄存器
+- `bs <addr.>`: 在 <addr.> 设置断点
+- `bd <id>`: 清除编号为 <id> 的断点
+- `bl`: 查看所有断点
+- `step [<count> = 1]`: 单步执行 `count` 次
+- `run`: 运行至 breakpoint 或 halt（否则会无法停止）
+- `reset`: 重置 pc（不会重置寄存器和内存）
 
 ## 示例
 
